@@ -36,6 +36,7 @@ class PrivateDetailView(generics.RetrieveAPIView):
                 return Article.objects.all()
         return Article.objects.filter(is_public=True)
 
+
 class ArticleCreateView(generics.CreateAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
