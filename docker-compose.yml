@@ -1,11 +1,32 @@
-version: '3'
-
 services:
   django:
-    build: .
+    build:
+      context: .
     container_name: django
-    command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/usr/src/app
+      - .:/app
     ports:
       - 8000:8000
+
+    command: ["sh", "./start.sh"]
+
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=database
+      - DB_NAME=testdb
+      - DB_USER=testuser
+      - DB_PASS=pass
+
+    depends_on:
+      - database
+
+  database:
+    image: postgres
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+
+volumes:
+  database:
